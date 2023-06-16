@@ -3,8 +3,9 @@ const fetch = require('node-fetch');
 const apiKey = 'ddd2adfb9ab8ad97c67276aa7df98236';
 //note à moi-meme : ne pas oublier d'utliser dotenv pour cacher la clé api
 exports.getMovie = async (req, res) => {
-  const url =
-    'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc';
+  const { page = 1 } = req.params; //page par défaut = 1
+  const url = `https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page=${page}&sort_by=popularity.desc`;
+
   const options = {
     headers: {
       accept: 'application/json',
@@ -17,10 +18,11 @@ exports.getMovie = async (req, res) => {
     const response = await fetch(`${url}&api_key=${apiKey}`, options);
     const data = await response.json();
 
-    // Send the movie data in the response
     res.json(data);
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res
+      .status(500)
+      .json({ error: 'Le serveur a peté, pas bon signe tout ça...' });
   }
 };
