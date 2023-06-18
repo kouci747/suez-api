@@ -9,9 +9,9 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-//toutes les routes qui commencent pas /api/v1 seront cherchées dans apiRouter
+//toutes les routes qui commencent par /api/v1 seront cherchées dans apiRouter
 app.use('/api/v1', apiRouter);
 
-app.listen(5432, function () {
+app.listen(process.env.SERVER_PORT, function () {
   console.log('le server suez-backend est lancé');
 });
